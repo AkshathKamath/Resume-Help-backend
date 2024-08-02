@@ -19,7 +19,7 @@ const s3 = new AWS.S3({
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-app.get("/  ", (req, res) => {
+app.get("/", (req, res) => {
   res.json({ message: "Hello, world!" });
 });
 
