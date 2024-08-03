@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
 const AWS = require("aws-sdk");
+const axios = require("axios");
 const path = require("path");
 
 const app = express();
@@ -19,9 +20,13 @@ const s3 = new AWS.S3({
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
+//------------------------------------------------//
+
 app.get("/", (req, res) => {
   res.json({ message: "Hello, world!" });
 });
+
+//------------------------------------------------//
 
 app.post("/upload", upload.single("file"), (req, res) => {
   const params = {
@@ -38,6 +43,23 @@ app.post("/upload", upload.single("file"), (req, res) => {
     res.status(200).json({ message: "File uploaded successfully", data });
   });
 });
+
+//------------------------------------------------//
+
+app.get("/summary", async (req, res) => {
+  try {
+    const url = "https://resume-help.vercel.app/summarize";
+    const response = await axios.get(url);
+    res.json(response.data);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Error fetching data from the external API" });
+  }
+});
+
+//------------------------------------------------//
 
 app.listen(port, () => {
   console.log(`Server running on ${port}`);
