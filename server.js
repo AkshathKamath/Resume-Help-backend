@@ -61,6 +61,21 @@ app.get("/summary", async (req, res) => {
 
 //------------------------------------------------//
 
+app.post("/score", async (req, res) => {
+  try {
+    const url = "https://resume-help.vercel.app/score";
+    const formData = req.body;
+
+    const response = await axios.post(url, formData);
+    res.json(response.data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error sending data to the external API" });
+  }
+});
+
+//------------------------------------------------//
+
 app.listen(port, () => {
   console.log(`Server running on ${port}`);
 });
